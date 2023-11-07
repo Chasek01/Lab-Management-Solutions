@@ -5,16 +5,21 @@ from wtforms import StringField, SubmitField, IntegerField, validators
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
 
-class LaboratoryForm(FlaskForm):
-    username = StringField('Username', [DataRequired()])
-    password = StringField('Password', [DataRequired()])
+
+class LoginForm(FlaskForm):
+    username = StringField('Username', [validators.DataRequired()])
+    password = StringField('Password', [validators.DataRequired()])
     login = SubmitField('Login') 
 
-    add_column_index = IntegerField('Add Column Index', [DataRequired(), NumberRange(min=0)])
-    add_value = StringField('Add Data Value', [DataRequired()])
 
-    remove_column_index = IntegerField('Remove Column Index', [DataRequired(), NumberRange(min=0)])
-    remove_row_index = IntegerField('Remove Row Index', [DataRequired(), NumberRange(min=0)])
+class AddDataEntryForm(FlaskForm):
+    add_column_index = IntegerField('Column Index', [validators.DataRequired(), validators.NumberRange(min=0)])
+    add_value = StringField('Data Value', [validators.DataRequired()])
+
+
+class RemoveDataEntryForm(FlaskForm):
+    remove_column_index = IntegerField('Column Index', [validators.DataRequired(), validators.NumberRange(min=0)])
+    remove_row_index = IntegerField('Row Index', [validators.DataRequired(), validators.NumberRange(min=0)])
 
 
 @app.route('/', methods=['GET', 'POST'])
